@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style scoped>
-  button,
+button,
 a {
   text-decoration: none;
   padding: 0.75rem 1.5rem;
