@@ -1,4 +1,4 @@
-import firebaseurl from '../../../firebase.js'
+import firebaseurl from '../../../firebase.js' // e.g. https://someprojectkey.firebaseio.com
 
 export default {
   async registerCoach(context, data) {
@@ -12,7 +12,7 @@ export default {
       areas: data.areas
     }
 
-    const response = await fetch(`${firebaseurl}/${userId}.json`, {
+    const response = await fetch(`${firebaseurl}/coaches/${userId}.json`, {
       method: 'PUT',
       body: JSON.stringify(coachData)
     })
@@ -28,5 +28,30 @@ export default {
       ...coachData,
       id: userId
     })
+  },
+
+  async loadCoaches(context) {
+    const response = await fetch(`${firebaseurl}/coaches.json`)
+    const resData = await response.json()
+
+    if (!response.ok) {
+      // ... TODO: handle error
+    }
+
+    const coaches = []
+
+    for (const key in resData) {
+      const coach = {
+        firstName: resData[key].firstName,
+        lastName: resData[key].lastName,
+        description: resData[key].description,
+        hourlyRate: resData[key].hourlyRate,
+        areas: resData[key].areas
+      }
+      coaches.push(coach)
+    }
+
+    context.commit('setCoaches', coaches)
   }
+
 }
