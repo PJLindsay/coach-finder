@@ -42,11 +42,15 @@ export default {
     },
     description() {
       return this.selectedCoach.description
+    },
+    contactLink() {
+      console.log('contact Link: ',this.selectedCoach )
+      return `${this.$route.path}/${this.id}/contact`
     }
   },
   created() {
     this.selectedCoach = this.$store.getters['coaches/coaches'].find(
-      coach => coach.id === this.id
+      (coach) => coach.id === this.id
     )
   }
 }

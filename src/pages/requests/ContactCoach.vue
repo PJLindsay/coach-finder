@@ -40,6 +40,8 @@ export default {
 
       this.$router.replace('/coaches') // don't allow back button (no back to form)
 
+      // TODO: show a snackbar when message is posted/sent (or a loading spinner + )
+
     }
   }
 }
