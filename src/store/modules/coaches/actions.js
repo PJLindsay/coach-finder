@@ -30,7 +30,12 @@ export default {
     })
   },
 
-  async loadCoaches(context) {
+  async loadCoaches(context, payload) {
+
+    if (!payload.forceRefresh && !context.getters.shouldUpdate) {
+      return // don't get data again (wait until coach list is >1 minute old) or if user clicked 'refresh' button
+    }
+
     const response = await fetch(`${firebaseurl}/coaches.json`)
     const resData = await response.json()
 
@@ -53,6 +58,7 @@ export default {
     }
 
     context.commit('setCoaches', coaches)
+    context.commit('setFetchTimestamp') // flag this so we know when data was last fetched
   }
 
 }

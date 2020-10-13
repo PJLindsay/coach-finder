@@ -11,5 +11,14 @@ export default {
       const coaches = getters.coaches
     const userId = rootGetters.userId
     return coaches.some(coach => coach.id === userId)
+  },
+  shouldUpdate(state) {
+    const lastFetch = state.lastFetch
+    if (!lastFetch) {
+      return true
+    } else {
+      const currentTimeStamp = new Date().getTime()
+      return (currentTimeStamp - lastFetch) / 1000 > 60 // returns true if last fetch was > 1 minute ago
+    }
   }
 }
