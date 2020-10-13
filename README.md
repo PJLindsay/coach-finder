@@ -20,6 +20,17 @@ Udemy Vue3 course - Section 16 (Main Project)
 
 npm install
 
+## Setup
+
+add firebase key in ./src/firebase.js
+
+```
+const fbkey = 'https://[realtime-database-name].firebaseio.com'
+
+export default fbkey
+```
+
+
 ## Run
 
 npm run serve (Development)
