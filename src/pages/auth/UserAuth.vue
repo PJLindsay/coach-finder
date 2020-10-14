@@ -71,14 +71,16 @@ export default {
 
       try {
 
+        const actionPayload = {
+          email: this.email,
+          password: this.password
+        }
+
         if (this.mode === 'login') {
-          // ...
+          await this.$store.dispatch('login', actionPayload)
         } else {
           // NOTE: this module is *not* namespaced - so we can call it this was
-          await this.$store.dispatch('signup', {
-            email: this.email,
-            password: this.password
-          })
+          await this.$store.dispatch('signup', actionPayload)
         }
 
       } catch(err) {
