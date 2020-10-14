@@ -3,7 +3,28 @@ import {API_KEY} from '../../../firebase.js'
 
 export default {
   async login(context, payload) {
-    const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`, {
+    context.dispatch('auth', {
+      ...payload,
+      mode: 'login'
+    })
+  },
+
+  /**
+   * Refactored to "auto-login" - if user manually enters URL into browser we won't lose all data stored in store
+   *
+   * @param {Object} context
+   * @param {Object} payload
+   */
+  async auth(context, payload) {
+    const mode = payload.mode
+
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`
+    if (mode === 'signup') {
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`
+    }
+
+    const response = await fetch(
+      url, {
       method: 'POST',
       body: JSON.stringify({
         email: payload.email,
@@ -15,18 +36,39 @@ export default {
     const resData = await response.json()
 
     if (!response.ok) {
-      console.error('ERROR Login: ', resData)
       const error = new Error(resData.message || 'Failed to login. Check your email/password.')
       throw error
     }
 
-    console.log('SUCCESS Login: ', resData)
+    // put data in browser storage
+    localStorage.setItem('token', resData.idToken)
+    localStorage.setItem('userId', resData.localId)
+
     context.commit('setUser', {
       token: resData.idToken,
       userId: resData.localId,
       tokenExpiration: resData.expiresIn
     })
+  },
 
+  /**
+   * Try login - check to see if data is stored in browser local Storage
+   * used in cases where user manually enters a URL and we lose store data
+   * we will pull token out of local storage, then save it back to auth store
+   *
+   * called by App.vue created() hook
+   */
+  tryLogin(context) {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+
+    if (token && userId) {
+      context.commit('setUser', {
+        token: token,
+        userId: userId,
+        tokenExpiration: null
+      })
+    }
   },
 
   logout(context) {
@@ -46,28 +88,9 @@ export default {
    */
   async signup(context, payload) {
 
-    const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`, {
-      method: 'POST',
-      body: JSON.stringify({
-        email: payload.email,
-        password: payload.password,
-        returnSecureToken: true
-      })
-    })
-
-    const resData = await response.json()
-
-    if (!response.ok) {
-      console.error('ERROR: ', resData)
-      const error = new Error(resData.message || 'Failed to signup. Check your email/password.')
-      throw error
-    }
-
-    console.log('SUCCESS: ', resData)
-    context.commit('setUser', {
-      token: resData.idToken,
-      userId: resData.localId,
-      tokenExpiration: resData.expiresIn
+    context.dispatch('auth', {
+      ...payload,
+      mode: 'signup'
     })
 
   }

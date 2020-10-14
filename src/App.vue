@@ -14,6 +14,11 @@ import TheHeader from './components/layout/TheHeader.vue'
 export default {
   components: {
     TheHeader
+  },
+  created() {
+    // restore our token/userId from localStorage
+    // this is useful when user manually enters URL in browser or clicks Browser refresh button
+    this.$store.dispatch('tryLogin')
   }
 }
 </script>
