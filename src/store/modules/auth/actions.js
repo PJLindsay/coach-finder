@@ -29,6 +29,14 @@ export default {
 
   },
 
+  logout(context) {
+    context.commit('setUser', {
+      token: null,
+      userId: null,
+      tokenExpiration: null
+    })
+  },
+
   /**
    * Google Firebase documentation here:
    * https://firebase.google.com/docs/reference/rest/auth#section-create-email-password
