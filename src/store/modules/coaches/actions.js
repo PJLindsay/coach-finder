@@ -1,4 +1,5 @@
-import firebaseurl from '../../../firebase.js' // e.g. https://someprojectkey.firebaseio.com
+// import firebaseurl from '../../../firebase.js' // e.g. https://someprojectkey.firebaseio.com
+import {fbkey as firebaseurl} from '../../../firebase.js'
 
 export default {
   async registerCoach(context, data) {

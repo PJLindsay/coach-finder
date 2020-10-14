@@ -1,19 +1,27 @@
 <template>
-  <base-card>
-    <form @submit.prevent="submitForm">
-      <div class="form-control">
-        <label for="email">E-Mail</label>
-        <input type="email" id="email" v-model.trim="email" />
-      </div>
-      <div class="form-control">
-        <label for="password">Password</label>
-        <input type="password" id="password" v-model.trim="password" />
-      </div>
-      <p v-if="!formIsValid">Please enter a valid email and password"</p>
-      <base-button>{{ submitButtonCaption }}</base-button>
-      <base-button type="button" mode="flat" @click="switchAuthMode">{{ switchModeButtonCaption }}</base-button>
-    </form>
-  </base-card>
+  <div>
+    <base-dialog :show="!!error" title="An error occurred" @close="acknowledgeError">
+      <p>{{ error }}</p>
+    </base-dialog>
+    <base-dialog :show="isLoading" title="Authenticating..." fixed>
+      <base-spinner></base-spinner>
+    </base-dialog>
+    <base-card>
+      <form @submit.prevent="submitForm">
+        <div class="form-control">
+          <label for="email">E-Mail</label>
+          <input type="email" id="email" v-model.trim="email" />
+        </div>
+        <div class="form-control">
+          <label for="password">Password</label>
+          <input type="password" id="password" v-model.trim="password" />
+        </div>
+        <p v-if="!formIsValid">Please enter a valid email and password"</p>
+        <base-button>{{ submitButtonCaption }}</base-button>
+        <base-button type="button" mode="flat" @click="switchAuthMode">{{ switchModeButtonCaption }}</base-button>
+      </form>
+    </base-card>
+  </div>
 </template>
 
 <script>
@@ -26,7 +34,9 @@ export default {
       email: '',
       password: '',
       formIsValid: true,
-      mode: 'login' // login | signup
+      mode: 'login', // login | signup
+      isLoading: false,
+      error: null
     }
   },
   computed: {
@@ -46,13 +56,36 @@ export default {
     }
   },
   methods: {
-    submitForm() {
+    acknowledgeError() {
+      this.error = null
+    },
+
+    async submitForm() {
       this.formIsValid = true // clear old errors
       if (this.email === '' || !this.email.includes('@') || this.password.length < 6) {
         this.formIsValid = false
         return
       }
-      // send http request
+
+      this.isLoading = true
+
+      try {
+
+        if (this.mode === 'login') {
+          // ...
+        } else {
+          // NOTE: this module is *not* namespaced - so we can call it this was
+          await this.$store.dispatch('signup', {
+            email: this.email,
+            password: this.password
+          })
+        }
+
+      } catch(err) {
+        this.error = err.message || 'Failed to Authenticate. Check your login credentials'
+      }
+
+      this.isLoading = false
     },
     switchAuthMode() {
       if (this.mode === 'login') {
