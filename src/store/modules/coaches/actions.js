@@ -13,7 +13,10 @@ export default {
       areas: data.areas
     }
 
-    const response = await fetch(`${firebaseurl}/coaches/${userId}.json`, {
+    // access a protected resource by getting our token
+    const token = context.rootGetters.token
+
+    const response = await fetch(`${firebaseurl}/coaches/${userId}.json?auth=${token}`, {
       method: 'PUT',
       body: JSON.stringify(coachData)
     })
