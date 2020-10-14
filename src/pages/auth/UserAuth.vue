@@ -82,6 +82,8 @@ export default {
           // NOTE: this module is *not* namespaced - so we can call it this was
           await this.$store.dispatch('signup', actionPayload)
         }
+        const redirectURL = '/' + ( this.$route.query.redirect || 'coaches' ) // fallback url is /coaches (if we were not redirected here)
+        this.$router.replace(redirectURL)
 
       } catch(err) {
         this.error = err.message || 'Failed to Authenticate. Check your login credentials'
