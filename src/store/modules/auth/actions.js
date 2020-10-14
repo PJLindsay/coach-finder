@@ -1,6 +1,9 @@
 // import firebaseurl from '../../../firebase.js' // e.g. https://someprojectkey.firebaseio.com
 import {API_KEY} from '../../../firebase.js'
 
+// global var: hold time elapsed on token (for token expiry/auto-logout)
+let timer
+
 export default {
   async login(context, payload) {
     context.dispatch('auth', {
@@ -41,13 +44,22 @@ export default {
     }
 
     // put data in browser storage
+    const expiresIn = +resData.expiresIn * 1000
+    // const expiresIn = 5000 // expire in 5 seconds (for testing)
+
+    const expirationDate = new Date().getTime() + expiresIn
     localStorage.setItem('token', resData.idToken)
     localStorage.setItem('userId', resData.localId)
+    localStorage.setItem('tokenExpiration', expirationDate)
+
+    // call logout when token is expired
+    timer = setTimeout(function() {
+      context.dispatch('autoLogout')
+    }, expiresIn)
 
     context.commit('setUser', {
       token: resData.idToken,
-      userId: resData.localId,
-      tokenExpiration: resData.expiresIn
+      userId: resData.localId
     })
   },
 
@@ -61,22 +73,45 @@ export default {
   tryLogin(context) {
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
+    const tokenExpiration = localStorage.getItem('tokenExpiration')
+
+    const expiresIn = +tokenExpiration - new Date().getTime()
+
+    // if less than 10 seconds left, don't bother to login
+    if (expiresIn < 10000) {
+      return
+    }
+
+    timer = setTimeout(function() {
+      context.dispatch('autoLogout')
+    }, expiresIn)
 
     if (token && userId) {
       context.commit('setUser', {
         token: token,
-        userId: userId,
-        tokenExpiration: null
+        userId: userId
       })
     }
   },
 
   logout(context) {
+
+    // remove from localStorage so we don't think we're logged in when we're not
+    localStorage.removeItem('token')
+    localStorage.removeItem('userId')
+    localStorage.removeItem('tokenExpiration')
+
+    clearTimeout(timer) // reset auto-logout timer
+
     context.commit('setUser', {
       token: null,
-      userId: null,
-      tokenExpiration: null
+      userId: null
     })
+  },
+
+  autoLogout(context) {
+    context.dispatch('logout')
+    context.commit('setAutoLogout')
   },
 
   /**
