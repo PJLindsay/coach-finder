@@ -1,4 +1,3 @@
-// import firebaseurl from '../../../firebase.js' // e.g. https://someprojectkey.firebaseio.com
 import {fbkey as firebaseurl} from '../../../firebase.js'
 
 export default {
@@ -35,7 +34,7 @@ export default {
     // console.log('my token is: ', token)
     // const response = await fetch(`${firebaseurl}/requests/${coachId}.json?auth=${token}`)
     const response = await fetch(`${firebaseurl}/requests/${coachId}.json`)
-    const resData = response.json()
+    const resData = await response.json()
 
     if (!response.ok) {
       const error = new Error(resData.message || 'Failed to fetch requests')
