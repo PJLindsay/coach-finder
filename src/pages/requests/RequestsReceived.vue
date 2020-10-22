@@ -1,6 +1,10 @@
 <template>
   <div>
-    <base-dialog :show="!!error" title="An error occurred!" @close="handleError">
+    <base-dialog
+      :show="!!error"
+      title="An error occurred!"
+      @close="handleError"
+    >
       <p>{{ error }}</p>
     </base-dialog>
     <section>
@@ -24,7 +28,7 @@
 </template>
 
 <script>
-import RequestItem from '../../components/requests/RequestItem.vue'
+import RequestItem from '../../components/requests/RequestItem.vue';
 
 export default {
   components: {
@@ -34,38 +38,37 @@ export default {
     return {
       isLoading: false,
       error: null
-    }
+    };
   },
   created() {
-    this.loadRequests()
+    this.loadRequests();
   },
   computed: {
     hasRequests() {
-      return this.$store.getters['requests/hasRequests']
+      return this.$store.getters['requests/hasRequests'];
     },
     receivedRequests() {
-      return this.$store.getters['requests/requests']
+      return this.$store.getters['requests/requests'];
     }
   },
   methods: {
     async loadRequests() {
-      this.isLoading = true
+      this.isLoading = true;
       try {
-        await this.$store.dispatch('requests/fetchRequests')
+        await this.$store.dispatch('requests/fetchRequests');
       } catch (error) {
-        this.error = error.message || 'loadRequests() failed' // NOTE: error message fallback
+        this.error = error.message || 'loadRequests() failed'; // NOTE: error message fallback
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
     handleError() {
-      this.error = null
+      this.error = null;
     }
   }
-}
+};
 </script>
 
 <style scoped>
-
 header {
   text-align: center;
 }
@@ -80,5 +83,4 @@ ul {
 h3 {
   text-align: center;
 }
-
 </style>

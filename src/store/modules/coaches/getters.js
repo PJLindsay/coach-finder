@@ -1,24 +1,24 @@
 export default {
   coaches(state) {
-    return state.coaches
+    return state.coaches;
   },
   hasCoaches(state) {
-    return state.coaches && state.coaches.length > 0
+    return state.coaches && state.coaches.length > 0;
   },
   // check to see if user already registered as a coach
   // isCoach(state, getters, rootState, rootGetters) {
   isCoach(_, getters, _2, rootGetters) {
-      const coaches = getters.coaches
-    const userId = rootGetters.userId
-    return coaches.some(coach => coach.id === userId)
+    const coaches = getters.coaches;
+    const userId = rootGetters.userId;
+    return coaches.some(coach => coach.id === userId);
   },
   shouldUpdate(state) {
-    const lastFetch = state.lastFetch
+    const lastFetch = state.lastFetch;
     if (!lastFetch) {
-      return true
+      return true;
     } else {
-      const currentTimeStamp = new Date().getTime()
-      return (currentTimeStamp - lastFetch) / 1000 > 60 // returns true if last fetch was > 1 minute ago
+      const currentTimeStamp = new Date().getTime();
+      return (currentTimeStamp - lastFetch) / 1000 > 60; // returns true if last fetch was > 1 minute ago
     }
   }
-}
+};

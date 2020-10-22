@@ -30,9 +30,11 @@ export default {
 
   async fetchRequests(context) {
     const coachId = context.rootGetters.userId
-    const token = context.rootGetters.token
+    // const token = context.rootGetters.token
     // attach token to access a protected resource
-    const response = await fetch(`${firebaseurl}/requests/${coachId}.json?auth=${token}`)
+    // console.log('my token is: ', token)
+    // const response = await fetch(`${firebaseurl}/requests/${coachId}.json?auth=${token}`)
+    const response = await fetch(`${firebaseurl}/requests/${coachId}.json`)
     const resData = response.json()
 
     if (!response.ok) {

@@ -25,20 +25,19 @@ export default {
   computed: {
     isLoggedIn() {
       // note: this module is not namespaced
-      return this.$store.getters.isAuthenticated
+      return this.$store.getters.isAuthenticated;
     }
   },
   methods: {
     logout() {
-      this.$store.dispatch('logout')
-      this.$router.replace('/auth')
+      this.$store.dispatch('logout');
+      this.$router.replace('/auth');
     }
   }
-}
+};
 </script>
 
 <style scoped>
-
 header {
   width: 100%;
   height: 5rem;
@@ -97,5 +96,4 @@ header ul {
 li {
   margin: 0 0.5rem;
 }
-
 </style>

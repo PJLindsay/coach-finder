@@ -8,7 +8,9 @@
       <label for="message">Message</label>
       <textarea rows="5" id="message" v-model.trim="message"></textarea>
     </div>
-    <p class="errors" v-if="!formIsValid">Please enter a valid email and non-empty messsage field</p>
+    <p class="errors" v-if="!formIsValid">
+      Please enter a valid email and non-empty messsage field
+    </p>
     <div class="actions">
       <base-button>Send Message</base-button>
     </div>
@@ -22,29 +24,32 @@ export default {
       email: '',
       message: '',
       formIsValid: true
-    }
+    };
   },
   methods: {
     submitForm() {
-      this.formIsValid = true
-      if (this.email === '' || !this.email.includes('@') || this.message === '') {
-        this.formIsValid = false
-        return
+      this.formIsValid = true;
+      if (
+        this.email === '' ||
+        !this.email.includes('@') ||
+        this.message === ''
+      ) {
+        this.formIsValid = false;
+        return;
       }
 
       this.$store.dispatch('requests/contactCoach', {
         email: this.email,
         message: this.message,
         coachId: this.$route.params.id
-      })
+      });
 
-      this.$router.replace('/coaches') // don't allow back button (no back to form)
+      this.$router.replace('/coaches'); // don't allow back button (no back to form)
 
       // TODO: show a snackbar when message is posted/sent (or a loading spinner + )
-
     }
   }
-}
+};
 </script>
 
 <style scoped>

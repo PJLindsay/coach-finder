@@ -2,6 +2,8 @@
 
 Udemy Vue3 course - Section 16 (Main Project)
 
+
+
 ## Features
 
 ### Find a coach
@@ -16,19 +18,32 @@ Udemy Vue3 course - Section 16 (Main Project)
 - Contact a coach
 - View incoming requests
 
+
+
+
 ## Installation
 
 npm install
 
+
+
+
 ## Setup
 
-add firebase key in ./src/firebase.js
+put firebase realtime-database url in ./src/firebase.js
 
 ```
-const fbkey = 'https://[realtime-database-name].firebaseio.com'
-
-export default fbkey
+export const fbkey = 'https://[your-realtime-database-name].firebaseio.com'
 ```
+
+put firebase API_KEY in ./src/firebase.js
+
+```
+export const API_KEY = '[your-api-key]'
+```
+
+
+
 ## Serve
 
 Launch (Development mode)

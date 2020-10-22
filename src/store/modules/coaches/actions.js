@@ -1,4 +1,3 @@
-// import firebaseurl from '../../../firebase.js' // e.g. https://someprojectkey.firebaseio.com
 import {fbkey as firebaseurl} from '../../../firebase.js'
 
 export default {
@@ -14,17 +13,19 @@ export default {
     }
 
     // access a protected resource by getting our token
-    const token = context.rootGetters.token
+    // const token = context.rootGetters.token
 
-    const response = await fetch(`${firebaseurl}/coaches/${userId}.json?auth=${token}`, {
+    // const response = await fetch(`${firebaseurl}/coaches/${userId}.json?auth=${token}`, {
+    const response = await fetch(`${firebaseurl}/coaches/${userId}.json`, {
       method: 'PUT',
       body: JSON.stringify(coachData)
     })
 
-    // const resData = await response.json()
+    const resData = await response.json()
 
     if (!response.ok) {
-      // error
+      const error = new Error(resData.message || 'Failed to fetch')
+      throw error
     }
 
     // copy coachData and merge with userId for local mutation

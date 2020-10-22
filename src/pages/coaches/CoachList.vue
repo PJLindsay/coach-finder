@@ -1,7 +1,11 @@
 <template>
   <div>
     <!-- !!error converts string to bool -->
-    <base-dialog :show="!!error" title="An error occurred!" @close="handleError">
+    <base-dialog
+      :show="!!error"
+      title="An error occurred!"
+      @close="handleError"
+    >
       <p>{{ error }}</p>
     </base-dialog>
     <section>
@@ -10,9 +14,18 @@
     <section>
       <base-card>
         <div class="controls">
-          <base-button mode="outline" @click="loadCoaches(true)">Refresh</base-button>
-          <base-button v-if="!isLoggedIn" link to="/auth?redirect=register">Login</base-button>
-          <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">Login to Register as Coach</base-button>
+          <base-button mode="outline" @click="loadCoaches(true)"
+            >Refresh</base-button
+          >
+          <base-button v-if="!isLoggedIn" link to="/auth?redirect=register"
+            >Login</base-button
+          >
+          <base-button
+            v-if="isLoggedIn && !isCoach && !isLoading"
+            link
+            to="/register"
+            >Register as Coach</base-button
+          >
         </div>
         <div v-if="isLoading">
           <base-spinner></base-spinner>
@@ -35,9 +48,8 @@
 </template>
 
 <script>
-
-import CoachItem from '../../components/coaches/CoachItem.vue'
-import CoachFilter from '../../components/coaches/CoachFilter.vue'
+import CoachItem from '../../components/coaches/CoachItem.vue';
+import CoachFilter from '../../components/coaches/CoachFilter.vue';
 
 export default {
   components: {
@@ -53,59 +65,60 @@ export default {
         backend: true,
         career: true
       }
-    }
+    };
   },
   computed: {
     filteredCoaches() {
-      const coaches = this.$store.getters['coaches/coaches']
+      const coaches = this.$store.getters['coaches/coaches'];
       return coaches.filter(coach => {
         if (this.activeFilters.frontend && coach.areas.includes('frontend')) {
-          return true
+          return true;
         }
         if (this.activeFilters.backend && coach.areas.includes('backend')) {
-          return true
+          return true;
         }
         if (this.activeFilters.career && coach.areas.includes('career')) {
-          return true
+          return true;
         }
-        return false
-      })
+        return false;
+      });
     },
     hasCoaches() {
-      return !this.isLoading && this.$store.getters['coaches/hasCoaches']
+      return !this.isLoading && this.$store.getters['coaches/hasCoaches'];
     },
 
     isCoach() {
-      return this.$store.getters['coaches/isCoach']
+      return this.$store.getters['coaches/isCoach'];
     },
 
     isLoggedIn() {
       // note: this module is *not* namespaced
-      return this.$store.getters.isAuthenticated
+      return this.$store.getters.isAuthenticated;
     }
-
   },
   created() {
-    this.loadCoaches()
+    this.loadCoaches();
   },
   methods: {
     setFilters(updatedFilters) {
-      this.activeFilters = updatedFilters
+      this.activeFilters = updatedFilters;
     },
     async loadCoaches(refresh = false) {
-      this.isLoading = true
+      this.isLoading = true;
       try {
-        await this.$store.dispatch('coaches/loadCoaches', {forcedRefresh: refresh})
+        await this.$store.dispatch('coaches/loadCoaches', {
+          forcedRefresh: refresh
+        });
       } catch (error) {
-        this.error = error.message || 'Something went wrong: loadCoaches()'
+        this.error = error.message || 'Something went wrong: loadCoaches()';
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
     handleError() {
-      this.error = null
+      this.error = null;
     }
   }
-}
+};
 </script>
 
 <style scoped>

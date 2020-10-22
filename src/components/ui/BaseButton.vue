@@ -13,7 +13,7 @@ export default {
     link: {
       type: Boolean,
       required: false,
-      default:false
+      default: false
     },
     mode: {
       type: String,
@@ -26,7 +26,7 @@ export default {
       default: '/'
     }
   }
-}
+};
 </script>
 
 <style scoped>

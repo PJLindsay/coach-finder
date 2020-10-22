@@ -1,15 +1,15 @@
 export default {
   userId(state) {
-    return state.userId
+    return state.userId;
   },
   // used when we send requests to protected URLs
   token(state) {
-    return state.token
+    return state.token;
   },
   isAuthenticated(state) {
-    return !!state.token
+    return !!state.token;
   },
   didAutoLogout(state) {
-    return state.didAutoLogout
+    return state.didAutoLogout;
   }
-}
+};
