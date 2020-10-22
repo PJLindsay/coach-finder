@@ -8,7 +8,6 @@ export default {
       message: payload.message
     }
 
-    // storing request 'tagged' for a coach
     const response = await fetch(`${firebaseurl}/requests/${payload.coachId}.json`, {
       method: 'POST',
       body: JSON.stringify(newRequest)
@@ -17,7 +16,7 @@ export default {
     const resData = await response.json()
 
     if (!response.ok) {
-      const error = new Error(resData.message || 'Failed to send request!')
+      const error = new Error(resData.message || 'Failed to send coach request!')
       throw error
     }
 
@@ -29,15 +28,11 @@ export default {
 
   async fetchRequests(context) {
     const coachId = context.rootGetters.userId
-    // const token = context.rootGetters.token
-    // attach token to access a protected resource
-    // console.log('my token is: ', token)
-    // const response = await fetch(`${firebaseurl}/requests/${coachId}.json?auth=${token}`)
     const response = await fetch(`${firebaseurl}/requests/${coachId}.json`)
     const resData = await response.json()
 
     if (!response.ok) {
-      const error = new Error(resData.message || 'Failed to fetch requests')
+      const error = new Error(resData.message || 'Failed to fetch coach requests')
       throw error
     }
 

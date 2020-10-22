@@ -2,7 +2,7 @@
   <the-header></the-header>
   <router-view v-slot="slotProps">
     <transition name="route" mode="out-in">
-      <!-- point to Component that router is trying to load -->
+      <!-- point to Component router is trying to load -->
       <component :is="slotProps.Component"></component>
     </transition>
   </router-view>

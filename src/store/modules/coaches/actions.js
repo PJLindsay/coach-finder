@@ -12,10 +12,6 @@ export default {
       areas: data.areas
     };
 
-    // access a protected resource by getting our token
-    // const token = context.rootGetters.token
-
-    // const response = await fetch(`${firebaseurl}/coaches/${userId}.json?auth=${token}`, {
     const response = await fetch(`${firebaseurl}/coaches/${userId}.json`, {
       method: 'PUT',
       body: JSON.stringify(coachData)
@@ -24,11 +20,10 @@ export default {
     const resData = await response.json();
 
     if (!response.ok) {
-      const error = new Error(resData.message || 'Failed to fetch');
+      const error = new Error(resData.message || 'Failed to register coach');
       throw error;
     }
 
-    // copy coachData and merge with userId for local mutation
     context.commit('registerCoach', {
       ...coachData,
       id: userId
@@ -44,7 +39,7 @@ export default {
     const resData = await response.json();
 
     if (!response.ok) {
-      const error = new Error(resData.message || 'Failed to fetch');
+      const error = new Error(resData.message || 'Failed to load coaches');
       throw error;
     }
 
@@ -63,6 +58,6 @@ export default {
     }
 
     context.commit('setCoaches', coaches);
-    context.commit('setFetchTimestamp'); // flag this so we know when data was last fetched
+    context.commit('setFetchTimestamp'); // flag when data was last fetched
   }
 };

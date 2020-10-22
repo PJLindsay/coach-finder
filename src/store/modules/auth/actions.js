@@ -62,7 +62,7 @@ export default {
   },
 
   /**
-   * Checks to see if data is stored in browser local Storage
+   * Check to see if data is stored in browser local Storage
    * used in cases where user manually enters a URL and we lose store data
    * we will pull token out of local storage, then save it back to auth store
    *
@@ -93,7 +93,7 @@ export default {
   },
 
   logout(context) {
-    // remove from localStorage to prevent auto-login attempts
+    // remove from localStorage (prevent auto-login attempts)
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('tokenExpiration');
