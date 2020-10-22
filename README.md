@@ -29,8 +29,14 @@ const fbkey = 'https://[realtime-database-name].firebaseio.com'
 
 export default fbkey
 ```
+## Serve
 
+Launch (Development mode)
 
-## Run
+  $ npm run serve
 
-npm run serve (Development)
+## Build
+
+Build (Production)
+
+  $ npm run build

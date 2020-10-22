@@ -80,7 +80,7 @@ export default {
     },
 
     isLoggedIn() {
-      // note: this module is not namespaced
+      // note: this module is *not* namespaced
       return this.$store.getters.isAuthenticated
     }
 

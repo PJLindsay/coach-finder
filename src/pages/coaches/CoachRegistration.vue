@@ -18,7 +18,7 @@ export default {
   methods: {
     saveData(data) {
       this.$store.dispatch('coaches/registerCoach', data)
-      this.$router.replace('/coaches') // replace means you can't go back to form after it's submitted
+      this.$router.replace('/coaches') // don't allow back button after form submitted
     }
   }
 

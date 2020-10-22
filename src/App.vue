@@ -21,14 +21,13 @@ export default {
     }
   },
   created() {
-    // restore our token/userId from localStorage
-    // this is useful when user manually enters URL in browser or clicks Browser refresh button
+    // restore token/userId from localStorage
+    // used when user manually enters URL in browser or clicks Browser refresh button
     this.$store.dispatch('tryLogin')
   },
   watch: {
-    // this is used to make sure user does not stay on protected page when token expires and user auto-logged out
+    // insure user does not stay on protected page when token expires and user auto-logged out
     didAutoLogout(curValue, oldValue) {
-      // if true and it changed to true
       if (curValue && curValue !== oldValue) {
         this.$router.replace('/coaches')
       }

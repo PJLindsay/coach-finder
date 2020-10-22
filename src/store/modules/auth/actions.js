@@ -43,16 +43,14 @@ export default {
       throw error
     }
 
-    // put data in browser storage
     const expiresIn = +resData.expiresIn * 1000
-    // const expiresIn = 5000 // expire in 5 seconds (for testing)
 
     const expirationDate = new Date().getTime() + expiresIn
     localStorage.setItem('token', resData.idToken)
     localStorage.setItem('userId', resData.localId)
     localStorage.setItem('tokenExpiration', expirationDate)
 
-    // call logout when token is expired
+    // logout when token expired
     timer = setTimeout(function() {
       context.dispatch('autoLogout')
     }, expiresIn)
@@ -64,7 +62,7 @@ export default {
   },
 
   /**
-   * Try login - check to see if data is stored in browser local Storage
+   * Checks to see if data is stored in browser local Storage
    * used in cases where user manually enters a URL and we lose store data
    * we will pull token out of local storage, then save it back to auth store
    *
@@ -96,7 +94,7 @@ export default {
 
   logout(context) {
 
-    // remove from localStorage so we don't think we're logged in when we're not
+    // remove from localStorage to prevent auto-login attempts
     localStorage.removeItem('token')
     localStorage.removeItem('userId')
     localStorage.removeItem('tokenExpiration')
